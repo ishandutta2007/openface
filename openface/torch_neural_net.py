@@ -148,11 +148,14 @@ stdout: {}
         :rtype: numpy.ndarray
         """
         assert rgbImg is not None
-
-        t = '/tmp/openface-torchwrap-{}.png'.format(
-            binascii.b2a_hex(os.urandom(8)))
-        bgrImg = cv2.cvtColor(rgbImg, cv2.COLOR_RGB2BGR)
-        cv2.imwrite(t, bgrImg)
-        rep = self.forwardPath(t)
-        os.remove(t)
+        try:
+            t = '/tmp/openface-torchwrap-{}.png'.format(
+                binascii.b2a_hex(os.urandom(8)))
+            bgrImg = cv2.cvtColor(rgbImg, cv2.COLOR_RGB2BGR)
+            cv2.imwrite(t, bgrImg)
+            rep = self.forwardPath(t)
+        except Exception as ex:
+            pass
+        finally:
+            os.remove(t)
         return rep
