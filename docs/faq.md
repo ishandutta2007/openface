@@ -1,5 +1,14 @@
 # FAQ
 
+## Does the trained deep network model work well on people it wasn't trained with?
+
+Yes.
+
+## How can I detect unknown people?
+
+This is a work-in-progress, join in on the discussion in our issue
+[#144](https://github.com/cmusatyalab/openface/issues/144).
+
 ## How much time does OpenFace take to process an image?
 
 The execution time depends on the size of the input images.
@@ -55,3 +64,9 @@ change the `FROM` part of the
 [OpenFace Dockerfile](https://github.com/cmusatyalab/openface/blob/master/Dockerfile)
 to your version,
 then build the OpenFace Dockerfile.
+
+## I want to load an OpenFace model in ARM.
+
+Use our ASCII model from [this issue](https://github.com/cmusatyalab/openface/issues/42).
+You can load the ASCII model and save a new ARM binary model
+for faster loading times.

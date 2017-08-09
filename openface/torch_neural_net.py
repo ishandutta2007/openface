@@ -32,7 +32,27 @@ os.environ['TERM'] = 'linux'
 
 
 class TorchNeuralNet:
-    """Use a `Torch <http://torch.ch>`_ subprocess for feature extraction."""
+    """
+    Use a `Torch <http://torch.ch>`_ subprocess for feature extraction.
+
+    It also can be used as context manager using `with` statement.
+
+    .. code:: python
+
+        with TorchNeuralNet(model=model) as net:
+            # code
+
+    or
+
+    .. code:: python
+
+        net = TorchNeuralNet(model=model)
+        with net:
+            # use Torch's neural network
+
+    In this way Torch processes will be closed at the end of the `with` block.
+    `PEP 343 <https://www.python.org/dev/peps/pep-0343/>`_
+    """
 
     #: The default Torch model to use.
     defaultModel = os.path.join(myDir, '..', 'models', 'openface', 'nn4.small2.v1.t7')
@@ -61,12 +81,33 @@ class TorchNeuralNet:
                     '-model', model, '-imgDim', str(imgDim)]
         if cuda:
             self.cmd.append('-cuda')
-        self.p = Popen(self.cmd, stdin=PIPE, stdout=PIPE, bufsize=0)
+        self.p = Popen(self.cmd, stdin=PIPE, stdout=PIPE, bufsize=0, universal_newlines=True)
 
         def exitHandler():
             if self.p.poll() is None:
                 self.p.kill()
         atexit.register(exitHandler)
+
+    def __enter__(self):
+        """Part of the context manger protocol. See PEP 343"""
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        """
+        Clean up resources when leaves `with` block.
+
+        Kill the Lua subprocess to prevent zombie processes.
+        """
+        if self.p.poll() is None:
+            self.p.kill()
+
+
+    def __del__(self):
+        """
+        Kill the Lua subprocess to prevent zombie processes.
+        """
+        if self.p.poll() is None:
+            self.p.kill()
 
     def forwardPath(self, imgPath):
         """
@@ -100,6 +141,13 @@ OpenFace: `openface_server.lua` subprocess has died.
 + See this GitHub issue if you are running on a non-64-bit machine:
   https://github.com/cmusatyalab/openface/issues/42
 
++ Advanced Users: If you think this problem is caused by
+running Lua as a subprocess, Vitalius Parubochyi has created
+a version of this that uses https://github.com/imodpasteur/lutorpy.
+This file is available at <openface>/openface/torch_neural_net.lutorpy.py
+and our mailing list discussion on this can be found at:
+https://groups.google.com/forum/#!topic/cmu-openface/Jj68LJBdN-Y
+
 + Please post further issues to our mailing list at
   https://groups.google.com/forum/#!forum/cmu-openface
 
@@ -112,7 +160,7 @@ cmd: {}
 stdout: {}
 """.format(self.cmd, self.p.stdout.read()))
 
-        self.p.stdin.write(imgPath + "\n")
+        self.p.stdin.write(imgPath + '\n')
         output = self.p.stdout.readline()
         try:
             rep = [float(x) for x in output.strip().split(',')]

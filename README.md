@@ -1,10 +1,10 @@
-# OpenFace • [ ![Build Status] [travis-image] ] [travis] [ ![Release] [release-image] ] [releases] [ ![License] [license-image] ] [license] [ ![Gitter] [gitter-image] ] [gitter]
+# OpenFace • [![Build Status][travis-image]][travis] [![Release][release-image]][releases] [![License][license-image]][license] [![Gitter][gitter-image]][gitter]
 
 *Free and open source face recognition with
 deep neural networks.*
 
 
-[travis-image]: https://travis-ci.org/cmusatyalab/openface.png?branch=master
+[travis-image]: https://travis-ci.org/cmusatyalab/openface.svg?branch=master
 [travis]: http://travis-ci.org/cmusatyalab/openface
 
 [release-image]: http://img.shields.io/badge/release-0.2.1-blue.svg?style=flat
@@ -45,6 +45,7 @@ and should not be attributed to their employers or funding sources.
 + [demos/vis-outputs.lua](https://github.com/cmusatyalab/openface/tree/master/demos/vis-outputs.lua): Demo to
   visualize the network's outputs.
 + [demos/classifier.py](https://github.com/cmusatyalab/openface/tree/master/demos/classifier.py): Demo to train and use classifiers.
++ [demos/classifier_webcam.py](https://github.com/cmusatyalab/openface/blob/master/demos/classifier_webcam.py): Demo to use a trained classifier on a webcam stream.
 + [evaluation](https://github.com/cmusatyalab/openface/blob/master/evaluation): LFW accuracy evaluation scripts.
 + [openface](https://github.com/cmusatyalab/openface/tree/master/openface): Python library code.
 + [models](https://github.com/cmusatyalab/openface/tree/master/models): Model directory for openface and 3rd party libraries.

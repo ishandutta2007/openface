@@ -10,7 +10,7 @@
 #
 # Building and pushing:
 #   docker build -f opencv-dlib-torch.Dockerfile -t opencv-dlib-torch .
-#   docker tag -f <tag of last container> bamos/ubuntu-opencv-dlib-torch:ubuntu_14.04-opencv_2.4.11-dlib_18.16-torch_2016.03.19
+#   docker tag <tag of last container> bamos/ubuntu-opencv-dlib-torch:ubuntu_14.04-opencv_2.4.11-dlib_18.16-torch_2016.03.19
 #   docker push bamos/ubuntu-opencv-dlib-torch:ubuntu_14.04-opencv_2.4.11-dlib_18.16-torch_2016.03.19
 
 FROM ubuntu:14.04
@@ -72,10 +72,10 @@ RUN cd ~ && \
     mkdir -p dlib-tmp && \
     cd dlib-tmp && \
     curl -L \
-         https://github.com/davisking/dlib/releases/download/v18.16/dlib-18.16.tar.bz2 \
+         https://github.com/davisking/dlib/archive/v19.0.tar.gz \
          -o dlib.tar.bz2 && \
     tar xf dlib.tar.bz2 && \
-    cd dlib-18.16/python_examples && \
+    cd dlib-19.0/python_examples && \
     mkdir build && \
     cd build && \
     cmake ../../tools/python && \

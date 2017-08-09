@@ -218,7 +218,8 @@ function dataset:__init(...)
       if clsLength == 0 then
          error('Class has zero samples: ' .. self.classes[i])
       else
-         self.classList[i] = torch.linspace(runningIndex + 1, runningIndex + clsLength, clsLength):long()
+         -- self.classList[i] = torch.linspace(runningIndex + 1, runningIndex + clsLength, clsLength):long()
+         self.classList[i] = torch.range(runningIndex + 1, runningIndex + clsLength):long()
          self.imageClass[{{runningIndex + 1, runningIndex + clsLength}}]:fill(i)
       end
       runningIndex = runningIndex + clsLength
@@ -326,7 +327,7 @@ end
 
 -- by default, just load the image and return it
 function dataset:defaultSampleHook(imgpath)
-   local out = image.load(imgpath, 3, byte)
+   local out = image.load(imgpath, 3, 'float')
    out = image.scale(out, self.sampleSize[3], self.sampleSize[2])
    return out
 end
